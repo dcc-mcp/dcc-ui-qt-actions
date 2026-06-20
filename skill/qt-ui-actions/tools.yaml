@@ -1,0 +1,140 @@
+tools:
+  - name: click_widget
+    description: Click a Qt widget by widget_id or selector.
+    source_file: scripts/click_widget.py
+    execution: sync
+    affinity: main
+    timeout_hint_secs: 10
+    enforce_thread_affinity: true
+    annotations:
+      read_only_hint: false
+      destructive_hint: false
+      idempotent_hint: false
+      open_world_hint: false
+    input_schema:
+      type: object
+      properties:
+        widget_id:
+          type: string
+        object_name:
+          type: string
+        class_name:
+          type: string
+      anyOf:
+        - required: ["widget_id"]
+        - required: ["object_name"]
+        - required: ["class_name"]
+    output_schema:
+      type: object
+
+  - name: trigger_action
+    description: Trigger a QAction by object name or visible text.
+    source_file: scripts/trigger_action.py
+    execution: sync
+    affinity: main
+    timeout_hint_secs: 10
+    enforce_thread_affinity: true
+    annotations:
+      read_only_hint: false
+      destructive_hint: false
+      idempotent_hint: false
+      open_world_hint: false
+    input_schema:
+      type: object
+      properties:
+        object_name:
+          type: string
+        text:
+          type: string
+      anyOf:
+        - required: ["object_name"]
+        - required: ["text"]
+    output_schema:
+      type: object
+
+  - name: set_widget_value
+    description: Set a common Qt widget value or a named Qt property.
+    source_file: scripts/set_widget_value.py
+    execution: sync
+    affinity: main
+    timeout_hint_secs: 10
+    enforce_thread_affinity: true
+    annotations:
+      read_only_hint: false
+      destructive_hint: false
+      idempotent_hint: false
+      open_world_hint: false
+    input_schema:
+      type: object
+      required: ["value"]
+      properties:
+        widget_id:
+          type: string
+        object_name:
+          type: string
+        class_name:
+          type: string
+        property_name:
+          type: string
+        value: {}
+      anyOf:
+        - required: ["widget_id"]
+        - required: ["object_name"]
+        - required: ["class_name"]
+    output_schema:
+      type: object
+
+  - name: process_events
+    description: Process Qt events for a bounded number of milliseconds.
+    source_file: scripts/process_events.py
+    execution: sync
+    affinity: main
+    timeout_hint_secs: 10
+    enforce_thread_affinity: true
+    annotations:
+      read_only_hint: false
+      destructive_hint: false
+      idempotent_hint: false
+      open_world_hint: false
+    input_schema:
+      type: object
+      properties:
+        duration_ms:
+          type: integer
+          minimum: 0
+          maximum: 5000
+          default: 100
+    output_schema:
+      type: object
+
+  - name: screenshot_widget
+    description: Save a screenshot of a Qt widget or top-level window.
+    source_file: scripts/screenshot_widget.py
+    execution: sync
+    affinity: main
+    timeout_hint_secs: 15
+    enforce_thread_affinity: true
+    annotations:
+      read_only_hint: false
+      destructive_hint: false
+      idempotent_hint: false
+      open_world_hint: false
+    input_schema:
+      type: object
+      required: ["output_path"]
+      properties:
+        output_path:
+          type: string
+        widget_id:
+          type: string
+        object_name:
+          type: string
+        class_name:
+          type: string
+      anyOf:
+        - required: ["output_path", "widget_id"]
+        - required: ["output_path", "object_name"]
+        - required: ["output_path", "class_name"]
+        - required: ["output_path"]
+    output_schema:
+      type: object

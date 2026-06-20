@@ -1,0 +1,17 @@
+{
+  "version": "1",
+  "entries": [
+    {
+      "name": "dcc-ui-qt-actions",
+      "description": "Reusable Qt UI actions for DCC-MCP — click widgets, trigger actions, set values, and drive legacy UI workflows",
+      "dcc": ["maya", "houdini", "nuke", "substance", "mari", "katana"],
+      "tags": ["ui", "qt", "pyside", "pyqt", "automation"],
+      "version": "0.1.0",
+      "install": {
+        "type": "git",
+        "url": "https://github.com/dcc-mcp/dcc-ui-qt-actions",
+        "ref": "main"
+      }
+    }
+  ]
+}
