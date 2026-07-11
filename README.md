@@ -1,6 +1,6 @@
 # DCC-MCP Qt UI Actions
 
-![Workflow showcase](docs/workflow-showcase.png)
+![Workflow showcase](docs/images/dcc-ui-qt-actions-showcase.webp)
 
 Reusable Qt UI actions for DCC-MCP.
 
