@@ -2,7 +2,7 @@
 name: qt-ui-actions
 description: Drive legacy Qt UIs in DCC hosts by clicking widgets, triggering actions, setting values, processing events, and capturing widgets.
 license: MIT
-compatibility: "dcc-mcp-core 0.18+"
+compatibility: "dcc-mcp-core 0.18+; host-provided qtpy, PySide6, PySide2, PyQt6, or PyQt5"
 metadata:
   dcc-mcp:
     version: v0.1.0
