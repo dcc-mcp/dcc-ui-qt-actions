@@ -1,5 +1,7 @@
 # DCC-MCP Qt UI Actions
 
+![Workflow showcase](docs/workflow-showcase.png)
+
 Reusable Qt UI actions for DCC-MCP.
 
 Use this skill when a legacy Qt tool has no agent-friendly API and must be
