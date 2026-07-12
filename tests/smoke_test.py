@@ -32,9 +32,15 @@ def missing_qt_contract() -> None:
     assert result["error"] == "qt-action-failed", result
 
 
+def wrapper_contract() -> None:
+    for name in ("click_widget", "process_events", "screenshot_widget", "set_widget_value", "trigger_action"):
+        assert callable(load(name).main), f"{name}.py must expose main"
+
+
 def main() -> None:
     validate_skill()
     missing_qt_contract()
+    wrapper_contract()
 
 
 if __name__ == "__main__":
