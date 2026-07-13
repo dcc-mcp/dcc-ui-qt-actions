@@ -190,6 +190,22 @@ def process_events(*, duration_ms: int = 100) -> dict[str, Any]:
         return ToolResult.fail(str(exc), error="qt-action-failed").to_dict()
 
 
+def _grab_widget(widget: Any, app: Any) -> tuple[Any, str]:
+    """Capture native top-level windows through the compositor when possible."""
+    if _safe(widget, "isWindow", False):
+        screen = _safe(widget, "screen", None)
+        if screen is None and app is not None:
+            screen = _safe(app, "primaryScreen", None)
+        if screen is not None:
+            try:
+                pixmap = screen.grabWindow(int(widget.winId()))
+                if not pixmap.isNull():
+                    return pixmap, "screen.grabWindow"
+            except Exception:
+                pass
+    return widget.grab(), "widget.grab"
+
+
 def screenshot_widget(
     *,
     output_path: str,
@@ -208,10 +224,22 @@ def screenshot_widget(
             return ToolResult.not_found("Qt widget", widget_id or object_name or class_name or "<top-level>").to_dict()
         path = Path(output_path).expanduser().resolve()
         path.parent.mkdir(parents=True, exist_ok=True)
-        ok = widget.grab().save(str(path))
+        pixmap, capture_method = _grab_widget(widget, app)
+        ok = pixmap.save(str(path))
         if not ok:
-            return ToolResult.fail("Qt grab().save() returned false", error="screenshot-failed", output_path=str(path)).to_dict()
-        return ToolResult.ok("saved Qt widget screenshot", binding=qt["name"], output_path=str(path), widget=_summary(widget)).to_dict()
+            return ToolResult.fail(
+                "Qt screenshot save returned false",
+                error="screenshot-failed",
+                output_path=str(path),
+                capture_method=capture_method,
+            ).to_dict()
+        return ToolResult.ok(
+            "saved Qt widget screenshot",
+            binding=qt["name"],
+            output_path=str(path),
+            capture_method=capture_method,
+            widget=_summary(widget),
+        ).to_dict()
     except Exception as exc:
         return ToolResult.fail(str(exc), error="qt-action-failed").to_dict()
 
