@@ -37,10 +37,46 @@ def wrapper_contract() -> None:
         assert callable(load(name).main), f"{name}.py must expose main"
 
 
+def native_window_screenshot_contract() -> None:
+    module = load("_qt_actions")
+
+    class Pixmap:
+        def isNull(self):
+            return False
+
+    class Screen:
+        captured_window = None
+
+        def grabWindow(self, window_id):
+            self.captured_window = window_id
+            return Pixmap()
+
+    screen = Screen()
+
+    class Widget:
+        def isWindow(self):
+            return True
+
+        def screen(self):
+            return screen
+
+        def winId(self):
+            return 42
+
+        def grab(self):
+            raise AssertionError("native top-level windows must use screen capture")
+
+    pixmap, method = module._grab_widget(Widget(), app=None)
+    assert isinstance(pixmap, Pixmap)
+    assert method == "screen.grabWindow"
+    assert screen.captured_window == 42
+
+
 def main() -> None:
     validate_skill()
     missing_qt_contract()
     wrapper_contract()
+    native_window_screenshot_contract()
 
 
 if __name__ == "__main__":
