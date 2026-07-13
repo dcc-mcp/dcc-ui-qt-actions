@@ -5,7 +5,7 @@ license: MIT
 compatibility: "dcc-mcp-core 0.18+; host-provided qtpy, PySide6, PySide2, PyQt6, or PyQt5"
 metadata:
   dcc-mcp:
-    version: v0.1.1
+    version: v0.1.2
     dcc: python
     layer: infrastructure
     tags:
